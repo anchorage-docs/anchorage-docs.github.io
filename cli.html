@@ -175,7 +175,7 @@ def main():
     filter_input = lambda terms: prompt([{
                                             &#39;type&#39;: &#39;input&#39;,
                                             &#39;name&#39;: &#39;input&#39;,
-                                            &#39;message&#39;: f&#39;Enter a comma-separated list of the {terms} to filter.&#39;,
+                                            &#39;message&#39;: f&#39;Enter a comma-separated list of {terms} to filter OUT.&#39;,
                                             &#39;default&#39;: &#39;&#39;,
                                             &#39;filter&#39;: lambda string: string.split(&#34;,&#34;)
                                         }], style=style)[&#39;input&#39;]
@@ -204,31 +204,31 @@ def main():
         kind = prompt(filter_kind, style=style)[&#39;kind&#39;]
         newline()
         if &#39;directories&#39; in kind:
-            drop_dirs = filter_input(&#39;directories&#39;)
+            drop_dirs = filter_input(&#39;bookmark directory names&#39;)
             newline()
         if &#39;names&#39; in kind:
-            drop_names = filter_input(&#39;names&#39;)
+            drop_names = filter_input(&#39;bookmark names&#39;)
             newline()
         if &#39;urls&#39; in kind:
-            drop_urls = filter_input(&#39;URLs&#39;)
+            drop_urls = filter_input(&#39;bookmark URLs&#39;)
             newline()
     if &#39;match substring&#39; in drop_list:
         kind = prompt(filter_kind, style=style)[&#39;kind&#39;]
         newline()
         if &#39;directories&#39; in kind:
-            drop_dir_subs = filter_input(&#39;directory substrings&#39;)
+            drop_dir_subs = filter_input(&#39;bookmark directory name substrings&#39;)
             newline()
         if &#39;names&#39; in kind:
-            drop_name_subs = filter_input(&#39;name substrings&#39;)
+            drop_name_subs = filter_input(&#39;bookmark name substrings&#39;)
             newline()
         if &#39;urls&#39; in kind:
-            drop_url_subs = filter_input(&#39;URL substrings&#39;)
+            drop_url_subs = filter_input(&#39;bookmark URL substrings&#39;)
             newline()
     if &#39;regex&#39; in drop_list:
         kind = prompt(filter_kind, style=style)[&#39;kind&#39;]
         newline()
         if &#39;directories&#39; in kind:
-            drop_dir_regex = filter_regex(&#39;bookmark directories&#39;)
+            drop_dir_regex = filter_regex(&#39;bookmark directory names&#39;)
             newline()
             expr_check(drop_dir_regex)
         if &#39;names&#39; in kind:
@@ -465,7 +465,7 @@ def main():
     filter_input = lambda terms: prompt([{
                                             &#39;type&#39;: &#39;input&#39;,
                                             &#39;name&#39;: &#39;input&#39;,
-                                            &#39;message&#39;: f&#39;Enter a comma-separated list of the {terms} to filter.&#39;,
+                                            &#39;message&#39;: f&#39;Enter a comma-separated list of {terms} to filter OUT.&#39;,
                                             &#39;default&#39;: &#39;&#39;,
                                             &#39;filter&#39;: lambda string: string.split(&#34;,&#34;)
                                         }], style=style)[&#39;input&#39;]
@@ -494,31 +494,31 @@ def main():
         kind = prompt(filter_kind, style=style)[&#39;kind&#39;]
         newline()
         if &#39;directories&#39; in kind:
-            drop_dirs = filter_input(&#39;directories&#39;)
+            drop_dirs = filter_input(&#39;bookmark directory names&#39;)
             newline()
         if &#39;names&#39; in kind:
-            drop_names = filter_input(&#39;names&#39;)
+            drop_names = filter_input(&#39;bookmark names&#39;)
             newline()
         if &#39;urls&#39; in kind:
-            drop_urls = filter_input(&#39;URLs&#39;)
+            drop_urls = filter_input(&#39;bookmark URLs&#39;)
             newline()
     if &#39;match substring&#39; in drop_list:
         kind = prompt(filter_kind, style=style)[&#39;kind&#39;]
         newline()
         if &#39;directories&#39; in kind:
-            drop_dir_subs = filter_input(&#39;directory substrings&#39;)
+            drop_dir_subs = filter_input(&#39;bookmark directory name substrings&#39;)
             newline()
         if &#39;names&#39; in kind:
-            drop_name_subs = filter_input(&#39;name substrings&#39;)
+            drop_name_subs = filter_input(&#39;bookmark name substrings&#39;)
             newline()
         if &#39;urls&#39; in kind:
-            drop_url_subs = filter_input(&#39;URL substrings&#39;)
+            drop_url_subs = filter_input(&#39;bookmark URL substrings&#39;)
             newline()
     if &#39;regex&#39; in drop_list:
         kind = prompt(filter_kind, style=style)[&#39;kind&#39;]
         newline()
         if &#39;directories&#39; in kind:
-            drop_dir_regex = filter_regex(&#39;bookmark directories&#39;)
+            drop_dir_regex = filter_regex(&#39;bookmark directory names&#39;)
             newline()
             expr_check(drop_dir_regex)
         if &#39;names&#39; in kind:
