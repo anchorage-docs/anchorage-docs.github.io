@@ -26,7 +26,9 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from __future__ import print_function, unicode_literals
+<pre><code class="python">#!/usr/run/env python37
+
+from __future__ import print_function, unicode_literals
 
 import sys
 
@@ -47,7 +49,7 @@ except ImportError:
     sys.exit(&#34;Success! Please run again&#34;)
 
 
-def interface():
+def main():
     &#34;&#34;&#34;
     # CLI interface for the Anchorage library.
 
@@ -119,7 +121,7 @@ def interface():
                     &#39;name&#39;: &#39;browser&#39;,
                     &#39;message&#39;: f&#39;Please choose the browser from which to archive all bookmarks.&#39;,
                     &#39;default&#39;: True,
-                    &#39;choices&#39;: list(cfg.keys())[:-1],
+                    &#39;choices&#39;: list(cfg.keys()),
                     &#39;filter&#39;: lambda n: n.lower()
                    }]
 
@@ -289,8 +291,8 @@ def interface():
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="anchorage.cli.interface"><code class="name flex">
-<span>def <span class="ident">interface</span></span>(<span>)</span>
+<dt id="anchorage.cli.main"><code class="name flex">
+<span>def <span class="ident">main</span></span>(<span>)</span>
 </code></dt>
 <dd>
 <div class="desc"><h1 id="cli-interface-for-the-anchorage-library">CLI interface for the Anchorage library.</h1>
@@ -337,7 +339,7 @@ def interface():
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def interface():
+<pre><code class="python">def main():
     &#34;&#34;&#34;
     # CLI interface for the Anchorage library.
 
@@ -409,7 +411,7 @@ def interface():
                     &#39;name&#39;: &#39;browser&#39;,
                     &#39;message&#39;: f&#39;Please choose the browser from which to archive all bookmarks.&#39;,
                     &#39;default&#39;: True,
-                    &#39;choices&#39;: list(cfg.keys())[:-1],
+                    &#39;choices&#39;: list(cfg.keys()),
                     &#39;filter&#39;: lambda n: n.lower()
                    }]
 
@@ -590,7 +592,7 @@ def interface():
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
-<li><code><a title="anchorage.cli.interface" href="#anchorage.cli.interface">interface</a></code></li>
+<li><code><a title="anchorage.cli.main" href="#anchorage.cli.main">main</a></code></li>
 </ul>
 </li>
 </ul>
