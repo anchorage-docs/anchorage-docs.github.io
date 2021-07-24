@@ -126,7 +126,14 @@ def main():
                    }]
 
     browser = prompt(brow_choice, style=style)[&#39;browser&#39;]
-    bmk_dict = load(path(browser))
+    try:
+        bmk_dict = load(path(browser))
+    except FileNotFoundError:
+        smart_print_color(&#34;\n     ~Error: file not found.&#34;, &#34;red&#34;)
+        smart_print_color(&#34;\n     ~Edit ~/anchorage/config.toml to include the correct bookmark file path &#34;
+                          &#34;for your browser and try again.&#34;, &#34;red&#34;)
+        sys.exit()
+
     newline()
 
     # 3. Bookmark filter
@@ -435,7 +442,14 @@ def main():
                    }]
 
     browser = prompt(brow_choice, style=style)[&#39;browser&#39;]
-    bmk_dict = load(path(browser))
+    try:
+        bmk_dict = load(path(browser))
+    except FileNotFoundError:
+        smart_print_color(&#34;\n     ~Error: file not found.&#34;, &#34;red&#34;)
+        smart_print_color(&#34;\n     ~Edit ~/anchorage/config.toml to include the correct bookmark file path &#34;
+                          &#34;for your browser and try again.&#34;, &#34;red&#34;)
+        sys.exit()
+
     newline()
 
     # 3. Bookmark filter
