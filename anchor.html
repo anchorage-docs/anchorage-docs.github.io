@@ -26,7 +26,9 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from anchorage.bookmarks import bookmarks
+<pre><code class="python">import os
+
+from anchorage.bookmarks import bookmarks
 from anchorage.anchor_tools.local import create_archive, add as add_local, server
 from anchorage.anchor_tools.online import add as add_online
 
@@ -40,7 +42,7 @@ def anchor_locally(collection,
     :param archive: Full path of chosen archive. Defaults to &#34;/anchor&#34;.
     &#34;&#34;&#34;
 
-    create_archive(archive)
+    create_archive(os.path.abspath(archive))
 
     if isinstance(collection, bookmarks):
         err = collection.loop(lambda k, v: add_local(url=v[&#34;url&#34;]),
@@ -126,7 +128,7 @@ def anchor_log_online():
     :param archive: Full path of chosen archive. Defaults to &#34;/anchor&#34;.
     &#34;&#34;&#34;
 
-    create_archive(archive)
+    create_archive(os.path.abspath(archive))
 
     if isinstance(collection, bookmarks):
         err = collection.loop(lambda k, v: add_local(url=v[&#34;url&#34;]),

@@ -36,7 +36,6 @@ from anchorage.bookmarks import bookmarks, path, load
 from anchorage.anchor import anchor_online, anchor_locally
 from anchorage.anchor_infrs.infrastructure import init, read_config
 from anchorage.anchor_utils.shell import shell
-from anchorage.anchor_utils.regex import expr_check
 from anchorage.anchor_utils.aesthetic import smart_print_color, newline, title
 
 
@@ -51,7 +50,7 @@ except ImportError:
 
 def main():
     &#34;&#34;&#34;
-    # CLI interface for the Anchorage library.
+    # Anchorage library CLI.
 
     1. Dependency check
         - pip install --upgrade anchorage
@@ -72,10 +71,11 @@ def main():
             - Bookmark name
             - Bookmark URL
         - *Duplicate URLs are excluded by default*
-    4. Local or online archive choice
+    4. Archive choice
         - Online
         - Local
             - Local archive directory input
+    5. Confirmation
     &#34;&#34;&#34;
 
     # Title
@@ -125,7 +125,8 @@ def main():
                     &#39;filter&#39;: lambda n: n.lower()
                    }]
 
-    bmk_dict = load(path(prompt(brow_choice, style=style)[&#39;browser&#39;]))
+    browser = prompt(brow_choice, style=style)[&#39;browser&#39;]
+    bmk_dict = load(path(browser))
     newline()
 
     # 3. Bookmark filter
@@ -230,15 +231,12 @@ def main():
         if &#39;directories&#39; in kind:
             drop_dir_regex = filter_regex(&#39;bookmark directory names&#39;)
             newline()
-            expr_check(drop_dir_regex)
         if &#39;names&#39; in kind:
             drop_name_regex = filter_regex(&#39;bookmark names&#39;)
             newline()
-            expr_check(drop_name_regex)
         if &#39;urls&#39; in kind:
             drop_url_regex = filter_regex(&#39;bookmark URLs&#39;)
             newline()
-            expr_check(drop_url_regex)
 
     smart_print_color(&#34;     ~Applying filters to bookmark collection&#34;, &#34;yellow&#34;)
 
@@ -254,10 +252,11 @@ def main():
                     drop_names_regex=drop_name_regex,
                     drop_urls_regex=drop_url_regex,
                     )
+    n_bookmarks = len(bmk.bookmarks)
+    n_directories = bmk.n_dirs
+    smart_print_color(f&#34;     ~Done! Found {n_bookmarks} bookmarks in {n_directories} directories.\n&#34;, &#34;green&#34;)
 
-    smart_print_color(f&#34;     ~Done! Found {len(bmk.bookmarks)} bookmarks in {bmk.n_dirs} directories.\n&#34;, &#34;green&#34;)
-
-    # 4. Local or online archive
+    # 4. Archive choice
     archive_choice = [{
                     &#39;type&#39;: &#39;list&#39;,
                     &#39;name&#39;: &#39;archive&#39;,
@@ -267,21 +266,39 @@ def main():
                      }]
 
     archive = prompt(archive_choice, style=style)[&#39;archive&#39;]
+    newline()
 
-    if archive == &#39;online&#39;:         # Anchor online
-        anchor_online(bmk)
-
-    if archive == &#39;local&#39;:          # Anchor locally
-
-        dir_prompt = [{             # Archive directory input
+    if archive == &#39;local&#39;:          # Local archive directory
+        dir_prompt = [{
                           &#39;type&#39;: &#39;input&#39;,
                           &#39;name&#39;: &#39;dir&#39;,
                           &#39;message&#39;: &#39;Enter the full path of the archive directory (default: ./anchor).&#39;,
                           &#39;default&#39;: &#39;./anchor&#39;
                      }]
         archive_dir = prompt(dir_prompt, style=style)[&#39;dir&#39;]
+        newline()
 
-        anchor_locally(bmk, archive_dir)</code></pre>
+    # 5. Confirmation
+    confirmation = lambda br, nb: [{
+                                        &#39;type&#39;: &#39;confirm&#39;,
+                                        &#39;name&#39;: &#39;go&#39;,
+                                        &#39;message&#39;: &#39;All set! Proceed to archive your&#39;
+                                                   + &#34; &#34; + str(br) + &#34; &#34; + str(nb) + &#34; &#34; +
+                                                   &#39;bookmark collection?&#39;,
+                                        &#39;default&#39;: True
+                                   }]
+    conf_prompt = confirmation(browser.title(), n_bookmarks)
+
+    go = prompt(conf_prompt, style=style)[&#39;go&#39;]
+    newline()
+
+    if go:
+        if archive == &#39;online&#39;:                     # Anchor online
+            anchor_online(bmk)
+        elif archive == &#39;local&#39;:                    # Anchor locally
+            anchor_locally(bmk, archive_dir)
+    else:
+        smart_print_color(&#34;\n     Operation cancelled\n&#34;, &#34;red&#34;)</code></pre>
 </details>
 </section>
 <section>
@@ -295,7 +312,7 @@ def main():
 <span>def <span class="ident">main</span></span>(<span>)</span>
 </code></dt>
 <dd>
-<div class="desc"><h1 id="cli-interface-for-the-anchorage-library">CLI interface for the Anchorage library.</h1>
+<div class="desc"><h1 id="anchorage-library-cli">Anchorage library CLI.</h1>
 <ol>
 <li>Dependency check<ul>
 <li>pip install &ndash;upgrade anchorage</li>
@@ -326,7 +343,7 @@ def main():
 <li><em>Duplicate URLs are excluded by default</em></li>
 </ul>
 </li>
-<li>Local or online archive choice<ul>
+<li>Archive choice<ul>
 <li>Online</li>
 <li>Local<ul>
 <li>Local archive directory input</li>
@@ -334,6 +351,7 @@ def main():
 </li>
 </ul>
 </li>
+<li>Confirmation</li>
 </ol></div>
 <details class="source">
 <summary>
@@ -341,7 +359,7 @@ def main():
 </summary>
 <pre><code class="python">def main():
     &#34;&#34;&#34;
-    # CLI interface for the Anchorage library.
+    # Anchorage library CLI.
 
     1. Dependency check
         - pip install --upgrade anchorage
@@ -362,10 +380,11 @@ def main():
             - Bookmark name
             - Bookmark URL
         - *Duplicate URLs are excluded by default*
-    4. Local or online archive choice
+    4. Archive choice
         - Online
         - Local
             - Local archive directory input
+    5. Confirmation
     &#34;&#34;&#34;
 
     # Title
@@ -415,7 +434,8 @@ def main():
                     &#39;filter&#39;: lambda n: n.lower()
                    }]
 
-    bmk_dict = load(path(prompt(brow_choice, style=style)[&#39;browser&#39;]))
+    browser = prompt(brow_choice, style=style)[&#39;browser&#39;]
+    bmk_dict = load(path(browser))
     newline()
 
     # 3. Bookmark filter
@@ -520,15 +540,12 @@ def main():
         if &#39;directories&#39; in kind:
             drop_dir_regex = filter_regex(&#39;bookmark directory names&#39;)
             newline()
-            expr_check(drop_dir_regex)
         if &#39;names&#39; in kind:
             drop_name_regex = filter_regex(&#39;bookmark names&#39;)
             newline()
-            expr_check(drop_name_regex)
         if &#39;urls&#39; in kind:
             drop_url_regex = filter_regex(&#39;bookmark URLs&#39;)
             newline()
-            expr_check(drop_url_regex)
 
     smart_print_color(&#34;     ~Applying filters to bookmark collection&#34;, &#34;yellow&#34;)
 
@@ -544,10 +561,11 @@ def main():
                     drop_names_regex=drop_name_regex,
                     drop_urls_regex=drop_url_regex,
                     )
+    n_bookmarks = len(bmk.bookmarks)
+    n_directories = bmk.n_dirs
+    smart_print_color(f&#34;     ~Done! Found {n_bookmarks} bookmarks in {n_directories} directories.\n&#34;, &#34;green&#34;)
 
-    smart_print_color(f&#34;     ~Done! Found {len(bmk.bookmarks)} bookmarks in {bmk.n_dirs} directories.\n&#34;, &#34;green&#34;)
-
-    # 4. Local or online archive
+    # 4. Archive choice
     archive_choice = [{
                     &#39;type&#39;: &#39;list&#39;,
                     &#39;name&#39;: &#39;archive&#39;,
@@ -557,21 +575,39 @@ def main():
                      }]
 
     archive = prompt(archive_choice, style=style)[&#39;archive&#39;]
+    newline()
 
-    if archive == &#39;online&#39;:         # Anchor online
-        anchor_online(bmk)
-
-    if archive == &#39;local&#39;:          # Anchor locally
-
-        dir_prompt = [{             # Archive directory input
+    if archive == &#39;local&#39;:          # Local archive directory
+        dir_prompt = [{
                           &#39;type&#39;: &#39;input&#39;,
                           &#39;name&#39;: &#39;dir&#39;,
                           &#39;message&#39;: &#39;Enter the full path of the archive directory (default: ./anchor).&#39;,
                           &#39;default&#39;: &#39;./anchor&#39;
                      }]
         archive_dir = prompt(dir_prompt, style=style)[&#39;dir&#39;]
+        newline()
 
-        anchor_locally(bmk, archive_dir)</code></pre>
+    # 5. Confirmation
+    confirmation = lambda br, nb: [{
+                                        &#39;type&#39;: &#39;confirm&#39;,
+                                        &#39;name&#39;: &#39;go&#39;,
+                                        &#39;message&#39;: &#39;All set! Proceed to archive your&#39;
+                                                   + &#34; &#34; + str(br) + &#34; &#34; + str(nb) + &#34; &#34; +
+                                                   &#39;bookmark collection?&#39;,
+                                        &#39;default&#39;: True
+                                   }]
+    conf_prompt = confirmation(browser.title(), n_bookmarks)
+
+    go = prompt(conf_prompt, style=style)[&#39;go&#39;]
+    newline()
+
+    if go:
+        if archive == &#39;online&#39;:                     # Anchor online
+            anchor_online(bmk)
+        elif archive == &#39;local&#39;:                    # Anchor locally
+            anchor_locally(bmk, archive_dir)
+    else:
+        smart_print_color(&#34;\n     Operation cancelled\n&#34;, &#34;red&#34;)</code></pre>
 </details>
 </dd>
 </dl>

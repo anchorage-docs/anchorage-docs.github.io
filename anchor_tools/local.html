@@ -75,7 +75,7 @@ def init(archive=None):
     if not isinstance(archive, type(None)):
         os.chdir(archive)
 
-    archivebox(&#34;init --setup&#34;)
+    shell(&#34;echo &#39;name&#39; | docker-compose archivebox init --setup&#34;)
 
 
 def create_archive(archive, overwrite=False):
@@ -313,7 +313,7 @@ def archivebox_check():
     if not isinstance(archive, type(None)):
         os.chdir(archive)
 
-    archivebox(&#34;init --setup&#34;)</code></pre>
+    shell(&#34;echo &#39;name&#39; | docker-compose archivebox init --setup&#34;)</code></pre>
 </details>
 </dd>
 <dt id="anchorage.anchor_tools.local.server"><code class="name flex">
