@@ -56,7 +56,7 @@ def anchor_locally(collection,
     log_anchorage(err)
 
 
-def anchor_online(collection):
+def anchor_online(collection, overwrite):
     &#34;&#34;&#34;
     Anchor all bookmarks in an online archive.
 
@@ -64,11 +64,11 @@ def anchor_online(collection):
     &#34;&#34;&#34;
 
     if isinstance(collection, bookmarks):
-        err = collection.loop(lambda k, v: add_online(url=v[&#34;url&#34;]),
+        err = collection.loop(lambda k, v: add_online(url=v[&#34;url&#34;], overwrite=overwrite),
                               pb_label=&#34;ARCHIVING&#34;,
                               suppress_output=True)
     else:
-        err = bookmarks(collection).loop(lambda k, v: add_online(url=v[&#34;url&#34;]),
+        err = bookmarks(collection).loop(lambda k, v: add_online(url=v[&#34;url&#34;], overwrite=overwrite),
                                          pb_label=&#34;ARCHIVING&#34;,
                                          suppress_output=True)
 
@@ -178,7 +178,7 @@ def anchor_log_online():
 </details>
 </dd>
 <dt id="anchorage.anchor.anchor_online"><code class="name flex">
-<span>def <span class="ident">anchor_online</span></span>(<span>collection)</span>
+<span>def <span class="ident">anchor_online</span></span>(<span>collection, overwrite)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Anchor all bookmarks in an online archive.</p>
@@ -187,7 +187,7 @@ def anchor_log_online():
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def anchor_online(collection):
+<pre><code class="python">def anchor_online(collection, overwrite):
     &#34;&#34;&#34;
     Anchor all bookmarks in an online archive.
 
@@ -195,11 +195,11 @@ def anchor_log_online():
     &#34;&#34;&#34;
 
     if isinstance(collection, bookmarks):
-        err = collection.loop(lambda k, v: add_online(url=v[&#34;url&#34;]),
+        err = collection.loop(lambda k, v: add_online(url=v[&#34;url&#34;], overwrite=overwrite),
                               pb_label=&#34;ARCHIVING&#34;,
                               suppress_output=True)
     else:
-        err = bookmarks(collection).loop(lambda k, v: add_online(url=v[&#34;url&#34;]),
+        err = bookmarks(collection).loop(lambda k, v: add_online(url=v[&#34;url&#34;], overwrite=overwrite),
                                          pb_label=&#34;ARCHIVING&#34;,
                                          suppress_output=True)
 
