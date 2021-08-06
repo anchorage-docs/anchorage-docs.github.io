@@ -330,7 +330,7 @@ def main():
                         &#39;choices&#39;: [&#39;  - Full log output&#39;, &#39;  - Progress bar&#39;, &#39;  - Suppress all output&#39;],
                         &#39;filter&#39;: lambda choice: {&#39;Full log output&#39;    : 0,
                                                   &#39;Progress bar&#39;       : 20,
-                                                  &#39;Suppress all output&#39;: 50}[choice]
+                                                  &#39;Suppress all output&#39;: 50}[choice[4:]]
                   }]
     loglevel = prompt(log_prompt, style=style)[&#39;loglevel&#39;]
     newline()
@@ -684,7 +684,7 @@ def main():
                         &#39;choices&#39;: [&#39;  - Full log output&#39;, &#39;  - Progress bar&#39;, &#39;  - Suppress all output&#39;],
                         &#39;filter&#39;: lambda choice: {&#39;Full log output&#39;    : 0,
                                                   &#39;Progress bar&#39;       : 20,
-                                                  &#39;Suppress all output&#39;: 50}[choice]
+                                                  &#39;Suppress all output&#39;: 50}[choice[4:]]
                   }]
     loglevel = prompt(log_prompt, style=style)[&#39;loglevel&#39;]
     newline()

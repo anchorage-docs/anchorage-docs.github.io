@@ -27,10 +27,13 @@
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">import os
+import toml
+import datetime
 
 from anchorage.bookmarks import bookmarks
 from anchorage.anchor_tools.local import create_archive, add as add_local, server
 from anchorage.anchor_tools.online import add as add_online
+from anchorage.anchor_utils.system import home
 
 
 def anchor_online(collection, overwrite,
@@ -42,6 +45,9 @@ def anchor_online(collection, overwrite,
     :param loglevel: 0  - Full log output
                      20 - Progress bar
                      50 - Suppress all output
+
+    :return: Dictionary with the name, url and error message of all bookmarks
+             for which the archive process has failed.
     &#34;&#34;&#34;
 
     if isinstance(collection, bookmarks):
@@ -55,7 +61,7 @@ def anchor_online(collection, overwrite,
                                          pb_label=&#34;ARCHIVING&#34;,
                                          )
 
-    log_anchorage(err)
+    anchorage_error_log(err)
 
 
 def anchor_locally(collection, archive=&#34;./anchor&#34;,
@@ -68,6 +74,9 @@ def anchor_locally(collection, archive=&#34;./anchor&#34;,
     :param loglevel: 0  - Full log output
                      20 - Progress bar
                      50 - Suppress all output
+
+    :return: Dictionary with the name, url and error message of all bookmarks
+             for which the archive process has failed.
     &#34;&#34;&#34;
 
     create_archive(os.path.abspath(archive))
@@ -83,23 +92,31 @@ def anchor_locally(collection, archive=&#34;./anchor&#34;,
                                          pb_label=&#34;ARCHIVING&#34;,
                                          )
 
-    log_anchorage(err)
+    anchorage_error_log(err)
 
 
-def log_anchorage(error_log):
+def anchorage_error_log(error_log):
     &#34;&#34;&#34;
-    TODO: Save error log to ~/anchorage/error_log.toml
+    Save _anchor_online_ or _anchor_locally_ error log dictionary to
+
+        ~/.anchorage/error_log_YYYY_MM_DD.toml
 
     :param error_log: List of bookmarks for which the upload process has failed.
     &#34;&#34;&#34;
-    print(error_log)
+    anchorage_log = home() + f&#39;/.anchorage/error_log_{datetime.datetime.now().strftime(&#34;%Y-%m-%d&#34;)}.toml&#39;
+
+    with open(anchorage_log, &#39;w&#39;) as log_file:
+        toml.dump(error_log, log_file)
 
 
-def anchor_log_locally(archive=&#34;anchor&#34;):
+def anchor_error_log(where, archive=&#34;anchor&#34;):
     &#34;&#34;&#34;
     TODO: Attempt anchor of all bookmarks in the current error log.
-    &#34;&#34;&#34;
 
+    :param where:
+    - &#39;online&#39;: archive online
+    - &#39;local&#39;:  archive locally
+    &#34;&#34;&#34;
     create_archive(archive)
 
     pass
@@ -119,6 +136,32 @@ def anchor_log_online():
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
+<dt id="anchorage.anchor.anchor_error_log"><code class="name flex">
+<span>def <span class="ident">anchor_error_log</span></span>(<span>where, archive='anchor')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO: Attempt anchor of all bookmarks in the current error log.</p>
+<p>:param where:
+- 'online': archive online
+- 'local':
+archive locally</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def anchor_error_log(where, archive=&#34;anchor&#34;):
+    &#34;&#34;&#34;
+    TODO: Attempt anchor of all bookmarks in the current error log.
+
+    :param where:
+    - &#39;online&#39;: archive online
+    - &#39;local&#39;:  archive locally
+    &#34;&#34;&#34;
+    create_archive(archive)
+
+    pass</code></pre>
+</details>
+</dd>
 <dt id="anchorage.anchor.anchor_locally"><code class="name flex">
 <span>def <span class="ident">anchor_locally</span></span>(<span>collection, archive='./anchor', loglevel=20)</span>
 </code></dt>
@@ -129,7 +172,9 @@ def anchor_log_online():
 :param loglevel: 0
 - Full log output
 20 - Progress bar
-50 - Suppress all output</p></div>
+50 - Suppress all output</p>
+<p>:return: Dictionary with the name, url and error message of all bookmarks
+for which the archive process has failed.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -144,6 +189,9 @@ def anchor_log_online():
     :param loglevel: 0  - Full log output
                      20 - Progress bar
                      50 - Suppress all output
+
+    :return: Dictionary with the name, url and error message of all bookmarks
+             for which the archive process has failed.
     &#34;&#34;&#34;
 
     create_archive(os.path.abspath(archive))
@@ -159,26 +207,7 @@ def anchor_log_online():
                                          pb_label=&#34;ARCHIVING&#34;,
                                          )
 
-    log_anchorage(err)</code></pre>
-</details>
-</dd>
-<dt id="anchorage.anchor.anchor_log_locally"><code class="name flex">
-<span>def <span class="ident">anchor_log_locally</span></span>(<span>archive='anchor')</span>
-</code></dt>
-<dd>
-<div class="desc"><p>TODO: Attempt anchor of all bookmarks in the current error log.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def anchor_log_locally(archive=&#34;anchor&#34;):
-    &#34;&#34;&#34;
-    TODO: Attempt anchor of all bookmarks in the current error log.
-    &#34;&#34;&#34;
-
-    create_archive(archive)
-
-    pass</code></pre>
+    anchorage_error_log(err)</code></pre>
 </details>
 </dd>
 <dt id="anchorage.anchor.anchor_log_online"><code class="name flex">
@@ -206,7 +235,9 @@ def anchor_log_online():
 :param loglevel: 0
 - Full log output
 20 - Progress bar
-50 - Suppress all output</p></div>
+50 - Suppress all output</p>
+<p>:return: Dictionary with the name, url and error message of all bookmarks
+for which the archive process has failed.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -220,6 +251,9 @@ def anchor_log_online():
     :param loglevel: 0  - Full log output
                      20 - Progress bar
                      50 - Suppress all output
+
+    :return: Dictionary with the name, url and error message of all bookmarks
+             for which the archive process has failed.
     &#34;&#34;&#34;
 
     if isinstance(collection, bookmarks):
@@ -233,26 +267,33 @@ def anchor_log_online():
                                          pb_label=&#34;ARCHIVING&#34;,
                                          )
 
-    log_anchorage(err)</code></pre>
+    anchorage_error_log(err)</code></pre>
 </details>
 </dd>
-<dt id="anchorage.anchor.log_anchorage"><code class="name flex">
-<span>def <span class="ident">log_anchorage</span></span>(<span>error_log)</span>
+<dt id="anchorage.anchor.anchorage_error_log"><code class="name flex">
+<span>def <span class="ident">anchorage_error_log</span></span>(<span>error_log)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>TODO: Save error log to ~/anchorage/error_log.toml</p>
+<div class="desc"><p>Save <em>anchor_online</em> or <em>anchor_locally</em> error log dictionary to</p>
+<pre><code>~/.anchorage/error_log_YYYY_MM_DD.toml
+</code></pre>
 <p>:param error_log: List of bookmarks for which the upload process has failed.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def log_anchorage(error_log):
+<pre><code class="python">def anchorage_error_log(error_log):
     &#34;&#34;&#34;
-    TODO: Save error log to ~/anchorage/error_log.toml
+    Save _anchor_online_ or _anchor_locally_ error log dictionary to
+
+        ~/.anchorage/error_log_YYYY_MM_DD.toml
 
     :param error_log: List of bookmarks for which the upload process has failed.
     &#34;&#34;&#34;
-    print(error_log)</code></pre>
+    anchorage_log = home() + f&#39;/.anchorage/error_log_{datetime.datetime.now().strftime(&#34;%Y-%m-%d&#34;)}.toml&#39;
+
+    with open(anchorage_log, &#39;w&#39;) as log_file:
+        toml.dump(error_log, log_file)</code></pre>
 </details>
 </dd>
 </dl>
@@ -273,11 +314,11 @@ def anchor_log_online():
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
+<li><code><a title="anchorage.anchor.anchor_error_log" href="#anchorage.anchor.anchor_error_log">anchor_error_log</a></code></li>
 <li><code><a title="anchorage.anchor.anchor_locally" href="#anchorage.anchor.anchor_locally">anchor_locally</a></code></li>
-<li><code><a title="anchorage.anchor.anchor_log_locally" href="#anchorage.anchor.anchor_log_locally">anchor_log_locally</a></code></li>
 <li><code><a title="anchorage.anchor.anchor_log_online" href="#anchorage.anchor.anchor_log_online">anchor_log_online</a></code></li>
 <li><code><a title="anchorage.anchor.anchor_online" href="#anchorage.anchor.anchor_online">anchor_online</a></code></li>
-<li><code><a title="anchorage.anchor.log_anchorage" href="#anchorage.anchor.log_anchorage">log_anchorage</a></code></li>
+<li><code><a title="anchorage.anchor.anchorage_error_log" href="#anchorage.anchor.anchorage_error_log">anchorage_error_log</a></code></li>
 </ul>
 </li>
 </ul>
